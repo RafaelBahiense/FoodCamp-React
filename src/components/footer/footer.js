@@ -1,7 +1,7 @@
 export default function Footer() {
     return (
-        <div class="footer">
-            <a href="#" class="fazer-pedido">
+        <div className={"footer"}>
+            <a href="#" className={"fazer-pedido"}>
                 Selecione os 3 itens<br></br>para fechar o pedido
             </a>
         </div>
