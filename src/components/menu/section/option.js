@@ -14,7 +14,7 @@ export default function Option (props) {
             <div className={"title"}>{title}</div>
             <div className={"description"}>{description}</div>
             <div className={"add"}>
-                <div className={"price"}>{`R$ ${price}`}</div>
+                <div className={"price"}>{`R$ ${(Math.round(price * 100) / 100).toFixed(2)}`}</div>
                 <div className={"counter"}>
                     <ion-icon className={"red"} name="remove-outline" onClick={() => changeList(-1)}></ion-icon>
                     {counter}
