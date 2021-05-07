@@ -26,12 +26,10 @@ const serverResponse = { data :
 ]}
 
 export default function App() {
-    const [list, setList] = React.useState(serverResponse.data);
     const [finishedOrder, setFinishedOrder] = React.useState(false);
 
     function setQuantity(sectionIndex, option, num) {
         serverResponse.data[sectionIndex].section[option].quantity = num;
-        setList([...serverResponse.data]);
         orderWatcher();
     }
 
