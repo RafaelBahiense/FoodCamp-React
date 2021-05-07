@@ -1,12 +1,21 @@
+import React from 'react'
+
 export default function Option (props) {
+    const {img, title, description, price} = props;
+    const [counter, setCounter] = React.useState(0);
+
     return (
-        <div class="opcao" onclick="selecionarPrato()">
-            <img src={`assets/img/${props.img}.png`} />
-            <div class="titulo">{props.title}</div>
-            <div class="descricao">{props.description}</div>
-            <div class="preco">{`R$ ${props.price}`}</div>
-            <div class="check">
-            <ion-icon name="checkmark-circle"></ion-icon>
+        <div class={`option ${counter > 0 ? "selected" : ""}`} onClick={() => counter === 0 ? setCounter(counter + 1) : counter}>
+            <img src={`assets/img/${img}.png`} />
+            <div class="title">{title}</div>
+            <div class="description">{description}</div>
+            <div class="add">
+                <div class="price">{`R$ ${price}`}</div>
+                <div class="counter">
+                    <ion-icon class="red" name="remove-outline" onClick={() => setCounter(counter - 1)}></ion-icon>
+                    {counter}
+                    <ion-icon class="green" name="add-outline" onClick={() => setCounter(counter + 1)}></ion-icon>
+                </div>
             </div>
         </div>
     );
