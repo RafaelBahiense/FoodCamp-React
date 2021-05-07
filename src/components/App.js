@@ -43,11 +43,43 @@ export default function App() {
         setFinishedOrder(isOrderValid[0] && isOrderValid[1] && isOrderValid[2]);
     }
 
+    function buildOrder() {
+        let order = {dishes: [], drinks : [], desserts : []};
+        let total = 0;
+        function orders(title, price, quantity, index) {
+            total += parseFloat(price) * parseFloat(quantity);
+            const item = {title : title, price : price, quantity : quantity}
+            index === 0 ? order.dishes.push(item) : index === 1 ? order.drinks.push(item) : order.desserts.push(item); 
+        }
+        serverResponse.data.forEach((obj, index) => obj.section.forEach((obj) => obj.quantity > 0 ?  orders(obj.title, obj.price, obj.quantity, index) : obj.title));
+        whatsapp(order, total)
+    }
+
+    function whatsapp(order, total) {
+        function dishes(item) {
+            message += `- Prato: ${item.title} (${item.quantity}x)\n`;
+        }
+        function drinks(item) {
+            message += `- Bebida: ${item.title} (${item.quantity}x)\n`;
+        }
+        function desserts(item) {
+            message += `- Sobremesa: ${item.title} (${item.quantity}x)\n`;
+        }
+        let message = "Olá, gostaria de fazer o pedido:\n";
+        console.log(order, total);
+        order.dishes.forEach((item) => message += `- Prato: ${item.title} (${item.quantity})\n`);
+        order.drinks.forEach((item) => message += `- Bebida: ${item.title} (${item.quantity})\n`);
+        order.dishes.forEach((item) => message += `- Sobremesa: ${item.title} (${item.quantity})\n`);
+        message += `Total: R$ ${total}`;
+        const url = `https://wa.me/5521987654321?text=${encodeURIComponent(message)}`;
+        window.open(url);
+    }
+
     return (
     <>
         <Navbar />
         <Menu {...serverResponse}/>
-        <Footer finishedOrder={finishedOrder}/>
+        <Footer finishedOrder={finishedOrder} buildOrder={buildOrder}/>
     </>
     );
 }
