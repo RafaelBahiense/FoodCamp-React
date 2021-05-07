@@ -5,7 +5,7 @@ export default function Option (props) {
     const [counter, setCounter] = React.useState(0);
     function changeList (num) {
         setCounter(counter + num);
-        setQuantity(sectionIndex, option, num);
+        setQuantity(sectionIndex, option, counter + num);
     }
     
     return (

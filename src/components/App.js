@@ -1,7 +1,7 @@
+import React from 'react';
 import Navbar from './navbar/navbar';
 import Menu from './menu/menu';
 import Footer from './footer/footer';
-import React from 'react';
 
 const serverResponse = { data :
 [
@@ -27,18 +27,27 @@ const serverResponse = { data :
 
 export default function App() {
     const [list, setList] = React.useState(serverResponse.data);
+    const [finishedOrder, setFinishedOrder] = React.useState(false);
+
     function setQuantity(sectionIndex, option, num) {
-        serverResponse.data[sectionIndex].section[option].quantity += num;
-        setList(...serverResponse.data);
-        //console.log(serverResponse.data[0])
+        serverResponse.data[sectionIndex].section[option].quantity = num;
+        setList([...serverResponse.data]);
+        orderWatcher();
     }
+
     serverResponse.data.forEach((obj) => obj.section.forEach((obj) => {obj.setQuantity = setQuantity}));
+    
+    function orderWatcher() {
+        const isOrderValid = [false,false,false];
+        serverResponse.data.forEach((obj,index) => obj.section.forEach((obj) => obj.quantity > 0 ?  isOrderValid[index] = true : isOrderValid[index]));
+        setFinishedOrder(isOrderValid[0] && isOrderValid[1] && isOrderValid[2]);
+    }
 
     return (
     <>
         <Navbar />
         <Menu {...serverResponse}/>
-        <Footer />
+        <Footer finishedOrder={finishedOrder}/>
     </>
     );
 }
